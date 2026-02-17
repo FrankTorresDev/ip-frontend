@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getFilms, getFilmByTitle } from "../services/api";
 import SearchBar from "../components/SearchBar";
+import FilmsTable from "../components/FilmsTable";
 
 export default function Films() {
-  const { title } = useParams(); // /films/:title
+  const { title } = useParams();
 
   const [films, setFilms] = useState([]);
   const [film, setFilm] = useState(null);
+
+  // ✅ pagination state lives here
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -26,6 +31,7 @@ export default function Films() {
           const data = await getFilms();
           setFilms(data);
           setFilm(null);
+          setPage(0); // nice reset when returning to list
         }
       } catch (e) {
         setError(e?.message || "Error fetching films");
@@ -36,19 +42,30 @@ export default function Films() {
   }, [title]);
 
   async function handleSearch(filters) {
-  const params = new URLSearchParams();
+    setLoading(true);
+    setError("");
 
-  Object.entries(filters).forEach(([key, value]) => {
-    if (value) params.append(key, value);
-  });
+    try {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) params.append(key, value);
+      });
 
-  const res = await fetch(`/api/films/search?${params.toString()}`);
-  const data = await res.json();
-  setFilms(data);
-}
+      const res = await fetch(`/api/films/search?${params.toString()}`);
+      if (!res.ok) throw new Error("Search failed");
 
+      const data = await res.json();
+      setFilms(data);
 
-  // DETAILS VIEW
+      // ✅ reset pagination after search
+      setPage(0);
+    } catch (e) {
+      setError(e?.message || "Error searching films");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (title && film) {
     return (
       <div style={{ padding: 24 }}>
@@ -65,7 +82,6 @@ export default function Films() {
     );
   }
 
-  // LIST VIEW
   return (
     <div style={{ padding: 24 }}>
       <h1>Films</h1>
@@ -75,16 +91,16 @@ export default function Films() {
       {loading && <p>Loading…</p>}
       {error && <p style={{ color: "crimson" }}>{error}</p>}
 
-      {!loading && !error && (
-        <ul>
-          {films.map((f) => (
-            <li key={f.film_id}>
-              <Link to={`/films/${encodeURIComponent(f.title)}`}>{f.title}</Link>{" "}
-              {f.release_year ? `(${f.release_year})` : ""}
-            </li>
-          ))}
-        </ul>
-      )}
+      <FilmsTable
+        films={films}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(e) => {
+          setRowsPerPage(Number(e.target.value));
+          setPage(0);
+        }}
+      />
     </div>
   );
 }

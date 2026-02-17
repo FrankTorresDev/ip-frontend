@@ -53,3 +53,11 @@ export async function getFilmByCategory(category) {
   if (!res.ok) throw new Error("Failed to fetch film");
   return res.json();
 }
+
+//get the customers
+//this will return the movie by category
+export async function getCustomers() {
+  const res = await fetch(`${API_BASE}/customers`);
+  if (!res.ok) throw new Error("Failed to fetch customers");
+  return res.json();
+}

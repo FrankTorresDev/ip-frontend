@@ -25,7 +25,7 @@ export default function Landing() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>Sakila Store</h1>
+      <h1>Sakila Movie Store</h1>
       <p>Top 5 rented films of all time</p>
 
       {loading && <p>Loading...</p>}
@@ -47,7 +47,7 @@ export default function Landing() {
       <ol>
         {actors.map((a) => (
           <li key={a.actor_id} style={{ marginBottom: 8 }}>
-            <Link to={`/films/${encodeURIComponent(a.first_name + ' ' + a.last_name)}`}>
+            <Link to={`/actors/${encodeURIComponent(a.first_name + ' ' + a.last_name)}`}>
               {a.first_name} {a.last_name}
             </Link>{" "}
             — {a.movies_count} movies

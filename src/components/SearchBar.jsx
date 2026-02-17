@@ -1,4 +1,15 @@
 import { useState } from "react";
+import {
+  Paper,
+  Stack,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function SearchBar({ onSearch }) {
   const [filters, setFilters] = useState({
@@ -20,48 +31,71 @@ export default function SearchBar({ onSearch }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", gap: 12 }}>
-      
-      <input
-        type="text"
-        name="title"
-        placeholder="Film Title"
-        value={filters.title}
-        onChange={handleChange}
-      />
-
-      <input
-        type="text"
-        name="actor"
-        placeholder="Actor Name"
-        value={filters.actor}
-        onChange={handleChange}
-      />
-
-      <select
-        name="category"
-        value={filters.category}
-        onChange={handleChange}
+    <Paper
+      component="form"
+      onSubmit={handleSubmit}
+      elevation={2}
+      sx={{ p: 2, mb: 3 }}
+    >
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
+        alignItems="center"
       >
-        <option value="">All Categories</option>
-        <option value="Action">Action</option>
-        <option value="Action">Animation</option>
-        <option value="Action">Children</option>
-        <option value="Action">Classics</option>
-        <option value="Action">Documentary</option>
-        <option value="Action">Drama</option>
-        <option value="Action">Family</option>
-        <option value="Action">Foreign</option>
-        <option value="Action">Games</option>
-        <option value="Comedy">Horror</option>
-        <option value="Action">Music</option>
-        <option value="Action">New</option>
-        <option value="Drama">Sci-fi</option>
-        <option value="Horror">Sports</option>
-        <option value="Sci-Fi">Travel</option>
-      </select>
+        <TextField
+          name="title"
+          label="Film Title"
+          value={filters.title}
+          onChange={handleChange}
+          size="small"
+          fullWidth
+        />
 
-      <button type="submit">Search</button>
-    </form>
+        <TextField
+          name="actor"
+          label="Actor Name"
+          value={filters.actor}
+          onChange={handleChange}
+          size="small"
+          fullWidth
+        />
+
+        <FormControl size="small" fullWidth>
+          <InputLabel>Category</InputLabel>
+          <Select
+            name="category"
+            value={filters.category}
+            label="Category"
+            onChange={handleChange}
+          >
+            <MenuItem value="">All Categories</MenuItem>
+            <MenuItem value="Action">Action</MenuItem>
+            <MenuItem value="Animation">Animation</MenuItem>
+            <MenuItem value="Children">Children</MenuItem>
+            <MenuItem value="Classics">Classics</MenuItem>
+            <MenuItem value="Documentary">Documentary</MenuItem>
+            <MenuItem value="Drama">Drama</MenuItem>
+            <MenuItem value="Family">Family</MenuItem>
+            <MenuItem value="Foreign">Foreign</MenuItem>
+            <MenuItem value="Games">Games</MenuItem>
+            <MenuItem value="Horror">Horror</MenuItem>
+            <MenuItem value="Music">Music</MenuItem>
+            <MenuItem value="New">New</MenuItem>
+            <MenuItem value="Sci-Fi">Sci-Fi</MenuItem>
+            <MenuItem value="Sports">Sports</MenuItem>
+            <MenuItem value="Travel">Travel</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button
+          type="submit"
+          variant="contained"
+          startIcon={<SearchIcon />}
+          sx={{ minWidth: 140, height: 40 }}
+        >
+          Search
+        </Button>
+      </Stack>
+    </Paper>
   );
 }

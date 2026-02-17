@@ -76,7 +76,7 @@ if (error) return <p style={{ padding: 24, color: "crimson" }}>{error}</p>;
   else{
   return (
     <div style={{ padding: 24 }}>
-      <h1>Sakila Store</h1>
+      <h1>Actors</h1>
 
         <>
           <p>Top 5 Actors in store</p>
