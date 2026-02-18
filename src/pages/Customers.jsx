@@ -26,7 +26,7 @@ export default function Customers() {
 
         const arr = Array.isArray(data) ? data : data?.customers ?? [];
 
-        // ✅ Normalize shape so the table can render names no matter what keys it expects
+        
         const normalized = arr.map((c) => {
           const first = c.first_name ?? c.firstName ?? "";
           const last = c.last_name ?? c.lastName ?? "";
