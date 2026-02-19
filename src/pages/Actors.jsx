@@ -171,7 +171,7 @@ export default function Actors() {
             </div>
           </div>
           <p style={styles.subtitle}>
-            Most rented films featuring this actor (sorted by rentals).
+            Most rented films featuring this actor
           </p>
 
           <hr style={styles.divider} />
